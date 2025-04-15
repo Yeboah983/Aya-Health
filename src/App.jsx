@@ -18,29 +18,29 @@ import Schedule from "./pages/dashboard/Schedule";
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<RootLayout/>} >
-      <Route index={true} element={<Landing />} />
-      <Route path= "profile" element={<Profile/>}/>
-      <Route path= "community" element={<Community/>}/>
-      <Route path= "resources" element={<Resources/>}/>
-      <Route path= "match-therapist" element={<MatchTherapist/>}/>
-      <Route path= "chat" element={<Chat/>}/>
-      </Route>
+      <Routes>
+        <Route path="/" element={<RootLayout />}>
+          <Route index={true} element={<Landing />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="community" element={<Community />} />
+          <Route path="resources" element={<Resources />} />
+          <Route path="match-therapist" element={<MatchTherapist />} />
+          <Route path="chat" element={<Chat />} />
+        </Route>
 
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-      <Route path= "/dashboard" element={<DashboardLayout/>}>
-      <Route index={true} element={<Overview/>} />
-      </Route>
-      <Route path= "profile-therapist" element={<ProfileTherapist/>}/>
-      <Route path= "resources-dash" element={<ResourcesDash/>}/>
-      <Route path= "schedule" element={<Schedule/>}/>
-    </Routes>
+          <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index={true} element= {<Overview/>}/>
+          <Route path="/dashboard/profile-therapist" element= {<ProfileTherapist/>}/>
+          <Route path="/dashboard/resources-dash" element= {<ResourcesDash/>}/>
+          <Route path="/dashboard/schedule" element= {<Schedule/>}/>
+
+          </Route>
+      </Routes>
     </BrowserRouter>
-  )
-  ;
+  );
 }
 
 export default App;
