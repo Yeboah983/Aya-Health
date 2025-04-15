@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
-import { Menu, X } from "lucide-react"; // Optional: icons for menu
+import { Link } from "react-router"; 
+import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // dummy state
+
+  // Check login state from localStorage or authentication logic
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token); // Simulate auth check
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -32,24 +38,31 @@ const Navbar = () => {
       <Link to="/resources" className="hover:text-blue-200">
         Resources
       </Link>
-      <Link to="/profile" className="hover:text-blue-200">
-        Profile
-      </Link>
-      <div className="bg-white text-blue-600 px-5 py-2 rounded-3xl flex items-center gap-2 hover:bg-blue-100">
+
+      {isAuthenticated ? (
         <Link
-          to="/login"
+          to="/profile"
           className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
         >
-          Login
+          Profile
         </Link>
-        <p>/</p>
-        <Link
-          to="/signup"
-          className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
-        >
-          Signup
-        </Link>
-      </div>
+      ) : (
+        <div className="bg-white text-blue-600 px-5 py-2 rounded-3xl flex items-center gap-2 hover:bg-blue-100">
+          <Link
+            to="/login"
+            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+          >
+            Login
+          </Link>
+          <p>/</p>
+          <Link
+            to="/signup"
+            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+          >
+            Signup
+          </Link>
+        </div>
+      )}
     </>
   );
 
@@ -75,9 +88,7 @@ const Navbar = () => {
 
       {/* Mobile Nav */}
       {mobileMenuOpen && (
-        <div
-          className={`md:hidden flex flex-col items-start space-y-4 px-6 pb-6 pt-4 bg-blue-600 text-white`}
-        >
+        <div className="md:hidden flex flex-col items-start space-y-4 px-6 pb-6 pt-4 bg-blue-600 text-white">
           {navLinks}
         </div>
       )}

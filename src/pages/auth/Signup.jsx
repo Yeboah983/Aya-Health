@@ -98,7 +98,7 @@ const Signup = () => {
         {/* Sign In Link */}
         <p className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link to="/" className="text-[#3ab9c0] font-medium hover:underline">
+          <Link to="/login" className="text-[#3ab9c0] font-medium hover:underline">
             Sign in
           </Link>
         </p>
