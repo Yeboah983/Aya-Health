@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 import { FcGoogle } from "react-icons/fc";
-import Image from "../../assets/Images/login.jpg"; // Make sure this path matches your file structure
+import Image from "../../assets/Images/login.jpg";
+import { apiLogin } from "../../../services/auth"; // Import the apiLogin function
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const payload = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await apiLogin(payload); // Call the apiLogin function
+      console.log("Login successful", response.data);
+
+      // Optionally store token and redirect
+      // localStorage.setItem("token", response.data.token);  // Assuming your API returns a token
+      // navigate("/dashboard");  // Redirect to the dashboard or another page
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed"); // Handle error messages from backend
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="flex w-[100vw] h-[100vh] justify-between items-center bg-[#F8F8F8]">
       {/* Left Side - Form */}
@@ -13,30 +44,31 @@ const Login = () => {
           <p className="text-[#636364]">Please enter your details</p>
         </div>
 
-        <form className="w-[80%] max-w-md">
-          {/* Email */}
+        <form className="w-[80%] max-w-md" onSubmit={handleLogin}>
           <div className="flex flex-col mb-3">
             <label className="mb-1 font-medium">Email</label>
             <input
               type="email"
-              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="border border-gray-300 pl-2 py-2 rounded-xl"
               required
             />
           </div>
 
-          {/* Password */}
           <div className="flex flex-col mb-3">
             <label className="mb-1 font-medium">Password</label>
             <input
               type="password"
-              placeholder="********"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="border border-gray-300 pl-2 py-2 rounded-xl"
               required
             />
           </div>
 
-          {/* Remember Me + Forget Password */}
+          {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
+
           <div className="flex justify-between items-center pb-4 text-sm">
             <div className="flex items-center">
               <input type="checkbox" className="mr-2" />
@@ -47,13 +79,13 @@ const Login = () => {
             </Link>
           </div>
 
-          {/* Buttons */}
           <div className="flex flex-col gap-3">
             <button
               type="submit"
               className="bg-[#EA454C] text-white py-2 rounded-xl w-full"
+              disabled={loading}
             >
-              Sign In
+              {loading ? "Signing in..." : "Sign In"}
             </button>
 
             <Link
@@ -74,13 +106,8 @@ const Login = () => {
         </form>
       </div>
 
-      {/* Right Side - Image */}
       <div className="w-[50vw] h-full">
-        <img
-          src={Image}
-          alt="Login Visual"
-          className="w-full h-full object-cover"
-        />
+        <img src={Image} alt="Login Visual" className="w-full h-full object-cover" />
       </div>
     </div>
   );
