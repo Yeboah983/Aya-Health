@@ -1,22 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router"; 
+import { Link } from "react-router"; // Make sure it's 'react-router-dom'
 import { Menu, X } from "lucide-react";
+import { useAuth } from "../authContext"; // Import useAuth from context
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // dummy state
 
-  // Check login state from localStorage or authentication logic
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token); // Simulate auth check
-  }, []);
+  const { isAuthenticated, logout } = useAuth(); // Get auth status and logout function from context
 
+  // Check scroll position to change navbar style
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-    };
+    };  
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -25,9 +22,6 @@ const Navbar = () => {
     <>
       <Link to="/" className="hover:text-blue-200">
         Home
-      </Link>
-      <Link to="/chat" className="hover:text-blue-200">
-        Chat
       </Link>
       <Link to="/community" className="hover:text-blue-200">
         Community
@@ -40,12 +34,20 @@ const Navbar = () => {
       </Link>
 
       {isAuthenticated ? (
-        <Link
-          to="/profile"
-          className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
-        >
-          Profile
-        </Link>
+        <>
+          <Link
+            to="/profile"
+            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+          >
+            Profile
+          </Link>
+          <button
+            onClick={logout}
+            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+          >
+            Logout
+          </button>
+        </>
       ) : (
         <div className="bg-white text-blue-600 px-5 py-2 rounded-3xl flex items-center gap-2 hover:bg-blue-100">
           <Link
@@ -68,7 +70,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
+      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-blue-600 text-white shadow-md" : "bg-[#99C5C7] text-black"
       }`}
     >

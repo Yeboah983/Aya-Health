@@ -1,5 +1,6 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
 import "./App.css";
+import { AuthProvider } from "./authContext"; // Import the AuthProvider
 import RootLayout from "./layouts/RootLayout";
 import Landing from "./pages/user/Landing";
 import Profile from "./pages/user/Profile";
@@ -14,32 +15,40 @@ import Overview from "./pages/dashboard/Overview";
 import ProfileTherapist from "./pages/dashboard/ProfileTherapist";
 import ResourcesDash from "./pages/dashboard/ResourcesDash";
 import Schedule from "./pages/dashboard/Schedule";
+import Card from "./components/Card";
+import BookingForm from "./components/BookingForm";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<RootLayout />}>
-          <Route index={true} element={<Landing />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="community" element={<Community />} />
-          <Route path="resources" element={<Resources />} />
-          <Route path="match-therapist" element={<MatchTherapist />} />
-          <Route path="chat" element={<Chat />} />
-        </Route>
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-          <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index={true} element= {<Overview/>}/>
-          <Route path="/dashboard/profile-therapist" element= {<ProfileTherapist/>}/>
-          <Route path="/dashboard/resources-dash" element= {<ResourcesDash/>}/>
-          <Route path="/dashboard/schedule" element= {<Schedule/>}/>
-
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public site routes */}
+          <Route path="/" element={<RootLayout />}>
+            <Route index element={<Landing />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="community" element={<Community />} />
+            <Route path="resources" element={<Resources />} />
+            <Route path="match-therapist" element={<MatchTherapist />} />
+            <Route path="therapist/:id" element={<Card />} />
+            <Route path="schedule" element={<BookingForm />} />
+            <Route path="chat" element={<Chat />} />
           </Route>
-      </Routes>
-    </BrowserRouter>
+
+          {/* Authentication routes */}
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+
+          {/* Therapist dashboard routes */}
+          <Route path="dashboard" element={<DashboardLayout />}>
+            <Route index element={<Overview />} />
+            <Route path="profile-therapist" element={<ProfileTherapist />} />
+            <Route path="resources-dash" element={<ResourcesDash />} />
+            <Route path="schedule" element={<Schedule />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import Image from "../../assets/Images/login.jpg";
-import { apiLogin } from "../../../services/auth"; // Import the apiLogin function
+import { auth, db } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,21 +19,29 @@ const Login = () => {
     setLoading(true);
     setError(null);
 
-    const payload = {
-      email,
-      password,
-    };
-
     try {
-      const response = await apiLogin(payload); // Call the apiLogin function
-      console.log("Login successful", response.data);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      // Optionally store token and redirect
-      // localStorage.setItem("token", response.data.token);  // Assuming your API returns a token
-      // navigate("/dashboard");  // Redirect to the dashboard or another page
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const userRole = userData.role;
+
+        // Role-based navigation
+        if (userRole === "vendor") {
+          navigate("/dashboard"); // Therapist Dashboard
+        } else {
+          navigate("/"); // Regular user homepage
+        }
+      } else {
+        setError("User not found in the database.");
+      }
 
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed"); // Handle error messages from backend
+      setError(err.message || "Login failed.");
     } finally {
       setLoading(false);
     }
@@ -37,7 +49,6 @@ const Login = () => {
 
   return (
     <div className="flex w-[100vw] h-[100vh] justify-between items-center bg-[#F8F8F8]">
-      {/* Left Side - Form */}
       <div className="w-[50vw] flex flex-col justify-center items-center h-full gap-6">
         <div className="text-center">
           <h1 className="text-4xl font-semibold">WELCOME BACK</h1>
