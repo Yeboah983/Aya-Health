@@ -5,7 +5,7 @@ const Overview = () => {
     <div className="p-6 bg-gray-100 min-h-screen">
   {/* Greeting */}
   <h1 className="text-3xl font-bold text-blue-800 mb-6">
-    Welcome back, Dr. Serwaa
+    Welcome back, Dr. Damaris
   </h1>
 
   {/* Summary Cards */}

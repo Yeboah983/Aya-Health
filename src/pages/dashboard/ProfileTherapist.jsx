@@ -6,8 +6,8 @@ const ProfileTherapist = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const user = {
-    name: "Ama Serwaa",
-    email: "ama.serwaa@example.com",
+    name: "Damaris Danso",
+    email: "livingasdamaris@gmail.com",
     phone: "0241234567",
     language: "Twi",
   };
