@@ -18,6 +18,7 @@ import Schedule from "./pages/dashboard/Schedule";
 import Card from "./components/Card";
 import BookingForm from "./components/BookingForm";
 import SearchTherapist from "./components/SearchTherapist";
+import EditProfile from "./components/EditProfile";
 
 function App() {
   return (
@@ -46,7 +47,9 @@ function App() {
             <Route index element={<Overview />} />
             <Route path="profile-therapist" element={<ProfileTherapist />} />
             <Route path="resources-dash" element={<ResourcesDash />} />
-            <Route path="schedule" element={<Schedule />} />
+            <Route path="edit" element={<EditProfile/>} />
+            <Route path="schedule" element={<Schedule/>} />
+
           </Route>
         </Routes>
       </Router>

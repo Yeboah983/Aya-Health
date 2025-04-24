@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
 const EditProfile = ({ user, onCancel }) => {
-  const [formData, setFormData] = useState(user);
+  const [formData, setFormData] = useState({
+    ...user,
+    about: user.about || "",
+    areas: user.areas ? user.areas.join(", ") : "",
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -9,12 +13,16 @@ const EditProfile = ({ user, onCancel }) => {
 
   const handleSave = (e) => {
     e.preventDefault();
-    console.log("Updated user data:", formData); // Replace with backend call
+    const updatedData = {
+      ...formData,
+      areas: formData.areas.split(",").map((area) => area.trim()),
+    };
+    console.log("Updated user data:", updatedData); // Replace with backend call
     onCancel(); // Switch back to view mode
   };
 
   return (
-    <form onSubmit={handleSave} className="space-y-4">
+    <form onSubmit={handleSave} className="space-y-4 w-full max-w-md mx-auto">
       <div>
         <label className="block text-sm font-medium">Full Name</label>
         <input
@@ -62,6 +70,30 @@ const EditProfile = ({ user, onCancel }) => {
           <option value="Ewe">Ewe</option>
           <option value="Hausa">Hausa</option>
         </select>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">About</label>
+        <textarea
+          name="about"
+          value={formData.about}
+          onChange={handleChange}
+          rows={4}
+          className="w-full border px-4 py-2 rounded-lg"
+          placeholder="Write something about yourself..."
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Areas of Focus (comma separated)</label>
+        <input
+          type="text"
+          name="areas"
+          value={formData.areas}
+          onChange={handleChange}
+          className="w-full border px-4 py-2 rounded-lg"
+          placeholder="e.g., Anxiety, Depression, Trauma Recovery"
+        />
       </div>
 
       <div className="flex gap-4 mt-4">
