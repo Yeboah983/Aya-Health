@@ -1,57 +1,34 @@
-import React, { useState } from "react";
-import EditProfile from "../../components/EditProfile";
+// Profile.jsx
+import React from "react";
+import Image from '../../assets/Images/woma.jpg'
 
 const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
-
-  const user = {
-    name: "Ama Serwaa",
-    email: "ama.serwaa@example.com",
-    phone: "0241234567",
-    language: "Twi",
-  };
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
-      <div className="bg-white shadow-md rounded-2xl w-full max-w-2xl p-8">
-        <h2 className="text-3xl font-bold text-[#124fd1] mb-6">
-          {isEditing ? "Edit Profile" : "My Profile"}
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center px-4">
+      <div className="bg-white rounded-3xl shadow-xl p-8 max-w-md w-full space-y-6 mt-15">
+        <div className="flex flex-col items-center space-y-3">
+          <img
+            src= {Image}
+            alt="User Avatar"
+            className="w-48 h-48 rounded-full border-4 border-blue-500 shadow-sm"
+          />
+          <h2 className="text-2xl font-semibold text-blue-600">Albie Frimps</h2>
+          <p className="text-gray-500 text-sm">albiefrimps@example.com</p>
+        </div>
 
-        {isEditing ? (
-          <EditProfile user={user} onCancel={() => setIsEditing(false)} />
-        ) : (
-          <div className="space-y-4 text-gray-700">
-            <div>
-              <p className="font-semibold">Full Name</p>
-              <p>{user.name}</p>
-            </div>
+        <div className="border-t pt-4">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">About You</h3>
+          <p className="text-gray-600 text-sm">
+            Welcome to your profile! Here you’ll be able to manage your personal info and
+            future bookings.
+          </p>
+        </div>
 
-            <div>
-              <p className="font-semibold">Email Address</p>
-              <p>{user.email}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">Phone Number</p>
-              <p>{user.phone}</p>
-            </div>
-
-            <div>
-              <p className="font-semibold">Language Preference</p>
-              <p>{user.language}</p>
-            </div>
-
-            <div className="mt-6">
-              <button
-                className="bg-[#124fd1] text-white px-6 py-2 rounded-xl hover:bg-[#d63e45] transition"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit Profile
-              </button>
-            </div>
-          </div>
-        )}
+        <div className="pt-4 border-t">
+          <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+            Edit Profile
+          </button>
+        </div>
       </div>
     </div>
   );

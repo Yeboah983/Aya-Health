@@ -1,5 +1,5 @@
 import { auth } from './firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 // Signup function
 export const signUp = async (email, password) => {
@@ -23,4 +23,19 @@ export const login = async (email, password) => {
     console.error("Error logging in:", error.message);
     throw error;
   }
+};
+
+// Logout function
+export const logout = async () => {
+  try {
+    await signOut(auth);
+    console.log("User logged out");
+  } catch (error) {
+    console.error("Error logging out:", error.message);
+  }
+};
+
+// Monitor auth state changes (to determine if user is logged in or logged out)
+export const onAuthStateChangedListener = (callback) => {
+  onAuthStateChanged(auth, callback);
 };

@@ -17,6 +17,7 @@ import ResourcesDash from "./pages/dashboard/ResourcesDash";
 import Schedule from "./pages/dashboard/Schedule";
 import Card from "./components/Card";
 import BookingForm from "./components/BookingForm";
+import SearchTherapist from "./components/SearchTherapist";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="community" element={<Community />} />
             <Route path="resources" element={<Resources />} />
             <Route path="match-therapist" element={<MatchTherapist />} />
+            <Route path= "search" element={<SearchTherapist/>} />
             <Route path="therapist/:id" element={<Card />} />
             <Route path="schedule" element={<BookingForm />} />
             <Route path="chat" element={<Chat />} />

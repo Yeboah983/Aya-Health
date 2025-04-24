@@ -1,8 +1,10 @@
-// src/components/BookingForm.jsx
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { db } from "../firebase";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { collection, addDoc, Timestamp, query, where, getDocs } from "firebase/firestore";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import emailjs from "emailjs-com"; // Import EmailJS SDK
 
 export default function BookingForm() {
   const { state } = useLocation();
@@ -12,10 +14,11 @@ export default function BookingForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    date: "",
     time: "",
   });
+  const [selectedDate, setSelectedDate] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   if (!therapist) {
     return <p className="text-center mt-10">No therapist selected.</p>;
@@ -27,20 +30,66 @@ export default function BookingForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!selectedDate) {
+      setError("Please select a date.");
+      return;
+    }
+
     try {
+      // Prevent double booking
+      const q = query(
+        collection(db, "bookings"),
+        where("therapistId", "==", therapist.id),
+        where("date", "==", selectedDate.toDateString()),
+        where("time", "==", formData.time)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        setError("This time slot is already booked. Please choose another.");
+        return;
+      }
+
+      // Save the booking to Firestore
       await addDoc(collection(db, "bookings"), {
         therapistId: therapist.id,
         therapistName: therapist.name,
         ...formData,
+        date: selectedDate.toDateString(),
         createdAt: Timestamp.now(),
       });
+
       setSuccess(true);
-      setFormData({ name: "", email: "", date: "", time: "" });
-      // Optionally navigate back or to a confirmation page:
-      // navigate(-1);
+      setFormData({ name: "", email: "", time: "" });
+      setSelectedDate(null);
+      setError("");
+
+      // Send email notification via EmailJS
+      const bookingDetails = {
+        name: formData.name,
+        email: formData.email,
+        date: selectedDate.toDateString(),
+        time: formData.time,
+        therapist_name: therapist.name,
+      };
+
+      // Replace 'template_4zhpo6e' with your template ID
+      emailjs.send(
+        "service_vy31pjh", // Replace with your EmailJS service ID
+        "template_4zhpo6e", // Replace with your template ID
+        bookingDetails,
+        "user_yourUserID" // Replace with your EmailJS user ID
+      )
+      .then((response) => {
+        console.log('Email sent successfully:', response);
+      })
+      .catch((err) => {
+        console.error('Error sending email:', err);
+      });
+
     } catch (err) {
       console.error("Booking error:", err);
-      alert("Failed to book. Try again.");
+      setError("Failed to book. Try again.");
     }
   };
 
@@ -56,9 +105,11 @@ export default function BookingForm() {
 
         {success && (
           <p className="text-green-600 mb-4 text-center">
-            🎉 Booking submitted!
+            🎉 Booking submitted successfully!
           </p>
         )}
+
+        {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
 
         <input
           type="text"
@@ -80,14 +131,15 @@ export default function BookingForm() {
           className="w-full mb-3 p-2 border rounded"
         />
 
-        <div className="flex space-x-2 mb-4">
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
+        <div className="flex flex-col space-y-3 mb-4">
+          <DatePicker
+            selected={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+            placeholderText="Select a date"
+            className="w-full p-2 border rounded"
+            dateFormat="MMMM d, yyyy"
+            minDate={new Date()}
             required
-            className="w-1/2 p-2 border rounded"
           />
           <input
             type="time"
@@ -95,7 +147,7 @@ export default function BookingForm() {
             value={formData.time}
             onChange={handleChange}
             required
-            className="w-1/2 p-2 border rounded"
+            className="w-full p-2 border rounded"
           />
         </div>
 
