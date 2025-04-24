@@ -1,44 +1,30 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from 'react';
+import { auth } from './firebase'; // Assuming you're using Firebase Auth
+import { onAuthStateChanged } from 'firebase/auth';
 
-// Create AuthContext
 const AuthContext = createContext();
 
-// AuthProvider component to wrap the app and provide auth state
+export const useAuth = () => useContext(AuthContext);
+
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState(null); // Store user data (optional)
-  
-  // Check login state from localStorage or authentication logic
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (token && storedUser) {
-      setIsAuthenticated(true);
-      setUser(storedUser); // Retrieve user data from localStorage if available
-    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+    return unsubscribe;
   }, []);
 
-  // Function to update the auth state (including storing user data)
-  const login = (userData) => {
-    setIsAuthenticated(true);
-    setUser(userData);
-    localStorage.setItem("token", "your_token_here"); // Store token in localStorage
-    localStorage.setItem("user", JSON.stringify(userData)); // Store user data in localStorage
-  };
-
+  const isAuthenticated = !!user;
   const logout = () => {
-    setIsAuthenticated(false);
-    setUser(null);
-    localStorage.removeItem("token"); // Remove token on logout
-    localStorage.removeItem("user"); // Remove user data on logout
+    // Firebase logout
+    auth.signOut();
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to use auth context
-export const useAuth = () => useContext(AuthContext);

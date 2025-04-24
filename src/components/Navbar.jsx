@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router"; // Make sure it's 'react-router-dom'
+import { Link } from "react-router"; // Make sure to use 'react-router-dom'
 import { Menu, X } from "lucide-react";
-import { useAuth } from "../authContext"; // Import useAuth from context
+import { useAuth } from "../authContext"; // Importing the useAuth hook
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const { isAuthenticated, logout } = useAuth(); // Get auth status and logout function from context
+  // Get authentication status and logout function from context
+  const { isAuthenticated, logout } = useAuth();
 
-  // Check scroll position to change navbar style
+  // Handle scroll position for navbar style changes
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-    };  
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Links to display depending on authentication status
   const navLinks = (
     <>
       <Link to="/" className="hover:text-blue-200">
@@ -41,12 +43,15 @@ const Navbar = () => {
           >
             Profile
           </Link>
-          <button
-            onClick={logout}
-            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
-          >
-            Logout
-          </button>
+          <Link to="/">
+            {" "}
+            <button
+              onClick={logout}
+              className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+            >
+              Logout
+            </button>
+          </Link>
         </>
       ) : (
         <div className="bg-white text-blue-600 px-5 py-2 rounded-3xl flex items-center gap-2 hover:bg-blue-100">
@@ -71,7 +76,9 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-blue-600 text-white shadow-md" : "bg-[#99C5C7] text-black"
+        scrolled
+          ? "bg-blue-600 text-white shadow-md"
+          : "bg-[#99C5C7] text-black"
       }`}
     >
       <div className="flex justify-between items-center h-16 px-5 md:px-10">

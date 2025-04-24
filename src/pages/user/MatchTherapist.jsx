@@ -1,116 +1,87 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router";
-import Image from "../../assets/Images/sunset.jpg";
-import Image2 from "../../assets/Images/doc.jpg";
-import Image3 from "../../assets/Images/femaledoc.jpg";
-import Image4 from "../../assets/Images/doc2.jpg";
+import Image from "../../assets/Images/hero3.jpg";
+import Image2 from "../../assets/Images/facetime.png";
 
 const FindTherapist = () => {
-  const [search, setSearch] = useState("");
-
-  const therapists = [
-    {
-      id: 1,
-      name: "Kofi Asamoah",
-      specialty: "Anxiety & Stress",
-      language: "Twi",
-      image: Image2,
-    },
-    {
-      id: 2,
-      name: "Damaris Danso",
-      specialty: "Depression & Mood Disorders",
-      language: "English",
-      image: Image3,
-    },
-    {
-      id: 3,
-      name: "Clement Suarez",
-      specialty: "Teen Therapy",
-      language: "Ewe",
-      image: Image4,
-    },
-  ];
-
-  const filteredTherapists = therapists.filter((therapist) => {
-    const searchLower = search.toLowerCase();
-    return (
-      therapist.name.toLowerCase().includes(searchLower) ||
-      therapist.specialty.toLowerCase().includes(searchLower) ||
-      therapist.language.toLowerCase().includes(searchLower)
-    );
-  });
-
   return (
-    <div className="relative min-h-screen w-full">
-      {/* Background Image */}
-      <img
-        src={Image}
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover z-0"
-      />
+    <>
+      <div className="flex flex-col md:flex-row h-screen">
+  {/* Text Section */}
+  <div className="w-full md:w-[40%] bg-[#F1F3F2] flex items-center px-6 md:px-12">
+    <div>
+      <h1 className="text-4xl md:text-5xl font-bold mb-6 text-[#005C65] text-left">
+        Find the best therapist for you
+      </h1>
+      <p className="text-lg md:text-xl text-black font-medium mb-8 text-left">
+        “We know finding the right therapist can be hard. That’s why we’ve
+        created a personalized match system to help you connect with a
+        professional that fits your unique needs, preferences, and goals.”
+      </p>
+      <div className="flex gap-4">
+        <Link to="/search">
+          <button className="bg-[#005C65] text-black px-6 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">
+            Let’s Get Started
+          </button>
+        </Link>
+      </div>
+    </div>
+  </div>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-opacity-30 z-0" />
+  {/* Image Section */}
+  <div className="w-full md:w-[60%] relative">
+    <img
+      src={Image}
+      alt="man"
+      className="w-full h-full object-cover"
+    />
+  </div>
+</div>
 
-      {/* Main Content */}
-      <div className="relative z-10 pt-28 pb-10 px-4 md:px-20 text-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-6 text-white">
-            Find a Therapist
-          </h2>
 
-          {/* Search Input */}
-          <div className="flex items-center justify-center mb-8">
-            <input
-              type="text"
-              placeholder="Search by name, specialty, or language..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full max-w-lg px-4 py-2 border border-gray-300 rounded-xl shadow-sm text-black focus:outline-none focus:ring-2 focus:ring-[#124fd1]"
-            />
-          </div>
+      <div className="max-w-6xl mx-auto p-4 flex flex-col md:flex-row gap-6 h-auto md:h-[500px] mt-10 mb-10">
+  {/* Image (Left) */}
+  <div className="w-full md:w-1/2 rounded-lg  overflow-hidden flex items-center justify-center ">
+    <img
+      src={Image2}
+      alt="Quality mental health care within reach"
+      className="w-full h-full object-contain rounded-lg"
+    />
+  </div>
 
-          {/* Therapist Cards */}
-          <div className="grid md:grid-cols-3 gap-6">
-            {filteredTherapists.length > 0 ? (
-              filteredTherapists.map((therapist) => (
-                <div
-                  key={therapist.id}
-                  className="bg-white/20  p-6 rounded-2xl shadow-md hover:shadow-lg transition text-center"
-                >
-                  <img
-                    src={therapist.image}
-                    alt={therapist.name}
-                    className="w-24 h-24 rounded-full object-cover mb-4 mx-auto"
-                  />
-                  <h3 className="text-xl font-bold text-black mb-1">
-                    {therapist.name}
-                  </h3>
-                  <p className="text-black mb-1">
-                    <span className="font-bold">Specialty:</span>{" "}
-                    {therapist.specialty}
-                  </p>
-                  <p className="text-black mb-4">
-                    <span className="font-bold">Language:</span>{" "}
-                    {therapist.language}
-                  </p>
-                  <Link to={`/therapist/${therapist.id}`} state={{ therapist }}>
-                    <button className="bg-[#124fd1] text-white py-2 px-4 rounded-xl hover:bg-[#0e3fa8] transition">
-                      View Profile
-                    </button>
-                  </Link>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-white col-span-2">
-                No therapists found.
-              </p>
-            )}
-          </div>
+  {/* Text Content (Right) */}
+  <div className="w-full md:w-1/2 bg-white bg-opacity-75 p-6 rounded-lg flex flex-col justify-between">
+    <div>
+      <h1 className="text-3xl md:text-4xl font-bold text-[#005C65] mb-4">
+        Quality mental health care within reach
+      </h1>
+      <p className="text-[#4cbac4] mb-4 text-xl">
+        Research shows that 56% of Americans want to access a mental
+        health care provider. Talkspace connects members to a professional
+        therapist or medical provider quickly and without high costs or
+        long waits.
+      </p>
+      <p className="text-[#376468] mb-6 text-xl">
+        As a leading digital mental health platform, Aya Health has invested in
+        efficacy studies that validate value and member outcomes.
+      </p>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="bg-[#B9DDFF] p-4 rounded-lg">
+          <p className="text-2xl font-bold text-[#2A292D]">55%</p>
+          <p className="text-sm">are seeking care for the first time</p>
+        </div>
+        <div className="bg-[#E7F3FF] p-4 rounded-lg">
+          <p className="text-2xl font-bold text-[#2A292D]">60%</p>
+          <p className="text-sm">engage with the platform for 3+ months</p>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+    </>
   );
 };
 
