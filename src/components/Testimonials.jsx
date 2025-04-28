@@ -28,11 +28,11 @@ const Testimonials = () => {
 
   return (
     <section className="bg-[#99C5C7] py-10">
-      <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-black">
+      <h2 className="text-2xl md:text-4xl font-bold text-center mb-8 text-black">
         Success Stories
       </h2>
 
-      <div className="relative w-full flex justify-center items-center overflow-hidden">
+      <div className="relative w-full flex justify-center items-center overflow-hidden px-4">
         <div
           className="flex transition-transform duration-1000 ease-in-out"
           style={{
@@ -46,8 +46,8 @@ const Testimonials = () => {
               className="w-full flex-shrink-0 px-4"
               style={{ maxWidth: "100%" }}
             >
-              <div className="bg-[#f1f1f1] p-6 rounded-2xl shadow-md text-center mx-auto max-w-lg">
-                <p className="text-2xl italic text-gray-800">“{t.quote}”</p>
+              <div className="bg-[#f1f1f1] p-4 md:p-6 rounded-2xl shadow-md text-center mx-auto w-[90%] md:w-[500px]">
+                <p className="text-lg md:text-2xl italic text-gray-800">“{t.quote}”</p>
                 <p className="mt-4 font-semibold text-black">— {t.name}</p>
               </div>
             </div>

@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router"; // Make sure to use 'react-router-dom'
+import { Link } from "react-router";
 import { Menu, X } from "lucide-react";
-import { useAuth } from "../authContext"; // Importing the useAuth hook
+import { useAuth } from "../authContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Get authentication status and logout function from context
   const { isAuthenticated, logout } = useAuth();
 
-  // Handle scroll position for navbar style changes
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -19,19 +17,25 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Links to display depending on authentication status
+  // Handle link click: close mobile menu
+  const handleLinkClick = () => {
+    if (mobileMenuOpen) {
+      setMobileMenuOpen(false);
+    }
+  };
+
   const navLinks = (
     <>
-      <Link to="/" className="hover:text-blue-200">
+      <Link to="/" onClick={handleLinkClick} className="hover:text-blue-200">
         Home
       </Link>
-      <Link to="/community" className="hover:text-blue-200">
+      {/* <Link to="/community" onClick={handleLinkClick} className="hover:text-blue-200">
         Community
-      </Link>
-      <Link to="/match-therapist" className="hover:text-blue-200">
+      </Link> */}
+      <Link to="/match-therapist" onClick={handleLinkClick} className="hover:text-blue-200">
         Find Therapist
       </Link>
-      <Link to="/resources" className="hover:text-blue-200">
+      <Link to="/resources" onClick={handleLinkClick} className="hover:text-blue-200">
         Resources
       </Link>
 
@@ -39,24 +43,26 @@ const Navbar = () => {
         <>
           <Link
             to="/profile"
+            onClick={handleLinkClick}
             className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
           >
             Profile
           </Link>
-          <Link to="/">
-            {" "}
-            <button
-              onClick={logout}
-              className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
-            >
-              Logout
-            </button>
-          </Link>
+          <button
+            onClick={() => {
+              logout();
+              handleLinkClick();
+            }}
+            className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
+          >
+            Logout
+          </button>
         </>
       ) : (
         <div className="bg-white text-blue-600 px-5 py-2 rounded-3xl flex items-center gap-2 hover:bg-blue-100">
           <Link
             to="/login"
+            onClick={handleLinkClick}
             className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
           >
             Login
@@ -64,6 +70,7 @@ const Navbar = () => {
           <p>/</p>
           <Link
             to="/signup"
+            onClick={handleLinkClick}
             className="hover:text-[#325799] hover:font-semibold hover:text-[18px]"
           >
             Signup

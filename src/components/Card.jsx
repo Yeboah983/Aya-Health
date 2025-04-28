@@ -13,12 +13,12 @@ export default function Card() {
   }
 
   return (
-    <div className="relative w-full h-screen flex overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${Image})` }}>
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-10 " />
+    <div className="relative w-full min-h-screen flex overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${Image})` }}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm z-10" />
 
-      <div className="relative z-20 flex w-full justify-between max-w-6xl mx-auto mt-20 mb-5 rounded-2xl bg-white/30 backdrop-blur-lg shadow-lg overflow-hidden">
+      <div className="relative z-20 flex flex-col lg:flex-row w-full justify-between max-w-6xl mx-auto mt-20 mb-5 px-4 lg:px-8 rounded-2xl bg-white/30 backdrop-blur-lg shadow-lg overflow-hidden">
         {/* Sidebar */}
-        <div className="w-1/3 bg-white/50 p-5 flex flex-col items-center text-center ">
+        <div className="w-full lg:w-1/3 p-5 flex flex-col items-center text-center space-y-4">
           <img
             src={therapist.image}
             alt={therapist.name}
@@ -38,7 +38,7 @@ export default function Card() {
         </div>
 
         {/* Main Content */}
-        <div className="w-2/3 p-10 space-y-6 text-left justify-around place-content-center items-center">
+        <div className="w-full lg:w-2/3 p-5 space-y-6 text-left">
           <div>
             <h4 className="font-bold text-gray-900 mb-2 text-2xl">About Your Session</h4>
             <p className="text-xl text-gray-800">
@@ -48,7 +48,7 @@ export default function Card() {
 
           <div>
             <h4 className="font-bold text-gray-900 mb-2 text-2xl">Areas</h4>
-            <div className="flex flex-wrap gap-2 ">
+            <div className="flex flex-wrap gap-2">
               {(therapist.areas || ["Stress Reduction", "Better Sleep", "Emotion Regulation"]).map((area, index) => (
                 <span key={index} className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
                   {area}
@@ -65,21 +65,21 @@ export default function Card() {
                   <li key={index}>{review}</li>
                 ))
               ) : (
-                <li>"Damaris helped me manage my anxiety in just a few sessions. Highly recommend her mindfulness techniques!"</li>
+                <li>"The therapist helped me manage my anxiety in just a few sessions. Highly recommend her mindfulness techniques!"</li>
               )}
             </ul>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-4 justify-between">
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700"
+              className="bg-blue-600 text-white px-6 py-4 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
             >
               Book Session
             </button>
             <button
               onClick={() => window.history.back()}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-4 px-6 rounded-lg"
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 py-4 px-6 rounded-lg w-full sm:w-auto"
             >
               Go Back
             </button>
@@ -92,9 +92,8 @@ export default function Card() {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-30">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md shadow-lg">
             <h3 className="text-lg font-bold text-blue-700 mb-4">Book Session with {therapist.name}</h3>
-            {/* Replace this with your form if you have it */}
-            <p className="text-sm text-gray-700 mb-4"><BookingForm/></p>
-            <div className="flex justify-end gap-3">
+            <BookingForm />
+            <div className="flex justify-end gap-3 mt-4">
               <button
                 onClick={() => setShowModal(false)}
                 className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"

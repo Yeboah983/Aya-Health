@@ -9,7 +9,6 @@ const Sidebar = () => {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: MdDashboard },
     { name: "Appointments", path: "/dashboard/schedule", icon: BiCalendar },
-    { name: "Messages", path: "/messages", icon: MdMessage },
     { name: "Resources", path: "/dashboard/resources-dash", icon: FaUserFriends },
     { name: "Profile", path: "/dashboard/profile-therapist", icon: FaUserCircle },
   ];

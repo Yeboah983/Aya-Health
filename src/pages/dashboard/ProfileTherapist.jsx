@@ -33,16 +33,24 @@ const ProfileTherapist = () => {
       className="min-h-screen bg-cover bg-center relative px-6 py-10 flex items-center justify-center"
       style={{ backgroundImage: `url(${BackgroundImage})` }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0  z-0"></div>
+      {/* Go Back Button - Positioned before the dark overlay */}
+      <Link
+        to="/dashboard"
+        className="absolute top-4 left-6 bg-blue-600 text-white px-4 py-1 mt-8 rounded hover:bg-blue-700 transition z-20"
+      >
+        Go Back
+      </Link>
 
-      <div className="relative z-10 w-full max-w-6xl flex flex-col bg-black/70 md:flex-row rounded-2xl overflow-hidden mt-15">
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+
+      <div className="relative z-10 w-full max-w-6xl flex flex-col md:flex-row bg-black/70 rounded-2xl overflow-hidden mt-15">
         {/* LEFT SIDE - Therapist Info */}
         <div className="w-full md:w-1/3 bg-transparent p-6 flex flex-col items-center text-center">
           <img
             src={therapist.image}
             alt={therapist.name}
-            className="w-40 h-40 rounded-full object-cover mb-4 mt-2 border-4 border-blue-500"
+            className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover mb-4 mt-2 border-4 border-blue-500"
           />
           <h2 className="text-2xl font-bold text-blue-400">Therapist</h2>
           <h3 className="text-xl font-semibold text-white">{therapist.name}</h3>
@@ -54,7 +62,7 @@ const ProfileTherapist = () => {
             <h4 className="font-bold text-white mt-4 mb-2 text-lg">
               Areas of Focus
             </h4>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 justify-center">
               {therapist.areas.map((area, index) => (
                 <button
                   key={index}
@@ -67,15 +75,8 @@ const ProfileTherapist = () => {
           </div>
         </div>
 
+        {/* RIGHT SIDE - Profile Details */}
         <div className="w-full md:w-2/3 flex items-center justify-center p-6 md:p-10 text-white relative">
-          {/* Go Back */}
-          <Link
-            to="/dashboard"
-            className="absolute top-4 right-6 bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
-          >
-            Go Back
-          </Link>
-
           <div className="w-full flex flex-col items-center justify-center">
             <h2 className="text-4xl font-bold text-white mb-6 text-center">
               {isEditing ? "Edit Profile" : "My Profile"}
@@ -105,7 +106,7 @@ const ProfileTherapist = () => {
                 </div>
                 <div className="mt-6">
                   <button
-                    className=" bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-800 transition"
+                    className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-800 transition"
                     onClick={() => setIsEditing(true)}
                   >
                     Edit Profile
